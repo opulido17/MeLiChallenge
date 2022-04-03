@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Galano Grotesque Extra Bold.otf</string>
+		<string>Galano-Grotesque-Bold.otf</string>
+		<string>Galano-Grotesque-Medium.otf</string>
+		<string>Galano-Grotesque-SemiBold.otf</string>
+		<string>Galano-Grotesque.otf</string>
+	</array>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>launchScreenBackground</string>
+		<key>UIImageName</key>
+		<string>LaunchScreenMeLi</string>
+	</dict>
+</dict>
+</plist>

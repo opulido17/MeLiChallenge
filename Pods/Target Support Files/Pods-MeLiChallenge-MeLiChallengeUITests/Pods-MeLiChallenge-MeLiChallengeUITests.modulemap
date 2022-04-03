@@ -1,0 +1,6 @@
+framework module Pods_MeLiChallenge_MeLiChallengeUITests {
+  umbrella header "Pods-MeLiChallenge-MeLiChallengeUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

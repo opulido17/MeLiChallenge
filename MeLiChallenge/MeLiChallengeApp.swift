@@ -11,7 +11,8 @@ import SwiftUI
 struct MeLiChallengeApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
+            //ProductHomeView()
         }
     }
 }
