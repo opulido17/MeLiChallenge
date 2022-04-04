@@ -39,8 +39,8 @@ class ProductDetailViewModel: ObservableObject {
         networkingService.getInfoSellerId(sellerId: sellerId) { [weak self] result in
             switch result {
             case .success(let sellerModel):
-                self?.sellerModel = sellerModel
                 self?.isLoadingSeller = false
+                self?.sellerModel = sellerModel
             case .failure(_):
                 self?.shouldShowSellerFuntionalityError = true
             }

@@ -50,7 +50,7 @@ struct HomeView: View {
                                         Image(systemName: "chart.bar.doc.horizontal")
                                             .foregroundColor(.blue)
                                             .font(.system(size: 20))
-                                            .skeleton(with: viewModel.isLoading, size: CGSize(width: 30, height: 30), transition: .slide)
+                                            .skeleton(with: viewModel.isLoading, size: CGSize(width: 40, height: 40), transition: .slide)
                                         Text(result.name)
                                             .font(Font.custom(FontName.regular.rawValue, size: 17))
                                             .foregroundColor(CustomColor.darkGray)

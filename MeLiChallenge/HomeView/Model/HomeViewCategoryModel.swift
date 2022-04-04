@@ -10,4 +10,8 @@ import Foundation
 struct CategoryModel: Decodable {
     let id: String
     let name: String
+    
+    static func getModelCategoryBasic() -> CategoryModel {
+        return CategoryModel(id: "", name: "")
+    }
 }

@@ -22,16 +22,23 @@ class HomeViewModel: ObservableObject {
     }
     
     func getCategories() {
-        networkingService.getCategories { [weak self] result in
-            switch result {
-            case .success(let categories):
-                print("X - Categories ", categories)
-                self?.isLoading = false
-                self?.categoryList = categories
-            case .failure(_):
-                print("X - Error")
-                self?.shouldShowFuntionalityError = true
+        getCateriesForShimmer()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.networkingService.getCategories { [weak self] result in
+                switch result {
+                case .success(let categories):
+                    self?.isLoading = false
+                    self?.categoryList = categories
+                case .failure(_):
+                    self?.shouldShowFuntionalityError = true
+                }
             }
+        }
+    }
+    
+    func getCateriesForShimmer() {
+        for _ in 0...7 {
+            self.categoryList.append(CategoryModel.getModelCategoryBasic())
         }
     }
 }

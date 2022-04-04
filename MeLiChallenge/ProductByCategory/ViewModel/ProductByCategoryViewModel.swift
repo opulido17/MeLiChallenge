@@ -21,14 +21,24 @@ class ProductByCategoryViewModel: ObservableObject {
     }
     
     func getProductsByCategory(categoryId: String) {
-        networkingService.getProductsCategory(categoryId: categoryId) { [weak self] result in
-            switch result {
-            case .success(let products):
-                self?.isLoading = false
-                self?.results = products
-            case .failure(_):
-                self?.shouldShowFuntionalityError = true
+        getProductByCategoryForShimmer()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.networkingService.getProductsCategory(categoryId: categoryId) { [weak self] result in
+                switch result {
+                case .success(let products):
+                    self?.isLoading = false
+                    self?.results = products
+                case .failure(_):
+                    self?.shouldShowFuntionalityError = true
+                }
             }
+        }
+    }
+    
+    func getProductByCategoryForShimmer() {
+        for _ in 0...9 {
+            let result = Results.getModelResultBasic("")
+            self.results.append(result)
         }
     }
 }

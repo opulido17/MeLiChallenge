@@ -30,8 +30,8 @@ class ProductHomeViewModel: ObservableObject {
             self.networkingService.getProdcutsSearchBar(searchText: searchText, limit: self.limit) { [weak self] result in
                 switch result {
                 case .success(let result):
-                    self?.searchResult = result
                     self?.isLoading = false
+                    self?.searchResult = result
                 case .failure(_):
                     self?.shouldShowFuntionalityError = true
                 }
@@ -65,7 +65,7 @@ class ProductHomeViewModel: ObservableObject {
         limit = 10
         isLoading = true
         shouldShowFuntionalityError = false
-        searchResult.removeAll()
+        removeData()
         loadDataShimmer()
     }
     
@@ -82,7 +82,7 @@ class ProductHomeViewModel: ObservableObject {
         shouldShowFuntionalityReloadError = false
     }
     
-    private func loadDataShimmerUpdate() {
+    func loadDataShimmerUpdate() {
         self.searchResult.append(Results.getModelResultBasic("", true))
     }
 }

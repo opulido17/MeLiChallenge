@@ -25,10 +25,12 @@ struct ProductByCategoryView: View {
                         }
                     }
                 } else {
-                    ForEach(0...10, id: \.self) { _ in
-                        let result = Results(id: "", siteId: "", title: "", seller: nil, price: 0, prices: nil, salePrice: 0, currencyId: "", availableQuantity: 0, soldQuantity: 0, buyingMode: "", listingTypeId: "", stopTime: "", condition: "", permalink: "", thumbnail: "", acceptsMercadopago: false, installments: nil, attributes: nil, originalPrice: 0, categoryId: "", shimmer: false)
-                        OtherProductsViewCell(model: result, isLoading: viewModel.isLoading, cellFrame: (width: cardWidth(), height: 270))
-                    }
+//                    viewModel.getProductByCategoryForShimmer()
+//                    OtherProductsViewCell(model: viewModel, isLoading: viewModel.isLoading, cellFrame: (width: cardWidth(), height: 270))
+////                    ForEach(0...9, id: \.self) { _ in
+////                        let result = Results.getModelResultBasic("")
+////                        OtherProductsViewCell(model: result, isLoading: viewModel.isLoading, cellFrame: (width: cardWidth(), height: 270))
+////                    }
                 }
             }
             .padding(.horizontal, 5)
@@ -37,9 +39,7 @@ struct ProductByCategoryView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                viewModel.getProductsByCategory(categoryId: categoryId)
-            }
+            viewModel.getProductsByCategory(categoryId: categoryId)
         }
         .popup(isPresented: $viewModel.shouldShowFuntionalityError) {
             ErrorAlertView(isPresented: $viewModel.shouldShowFuntionalityError, text: Constants.messageErrorGeneric, image: Image("errorServiceGeneral"), confirm: {
