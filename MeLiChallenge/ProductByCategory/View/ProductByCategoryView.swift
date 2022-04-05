@@ -18,19 +18,10 @@ struct ProductByCategoryView: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: colums, spacing: 15) {
-                if !viewModel.results.isEmpty {
-                    ForEach(self.viewModel.results, id: \.id) { result in
-                        NavigationLink(destination: ProductDetailView(goBack: _goToBack, viewModel: ProductDetailViewModel(), model: result)) {
-                            OtherProductsViewCell(model: result, isLoading: viewModel.isLoading, cellFrame: (width: cardWidth(), height: 270))
-                        }
+                ForEach(self.viewModel.results, id: \.id) { result in
+                    NavigationLink(destination: ProductDetailView(goBack: _goToBack, viewModel: ProductDetailViewModel(), model: result)) {
+                        OtherProductsViewCell(model: result, isLoading: viewModel.isLoading, cellFrame: (width: cardWidth(), height: 270))
                     }
-                } else {
-//                    viewModel.getProductByCategoryForShimmer()
-//                    OtherProductsViewCell(model: viewModel, isLoading: viewModel.isLoading, cellFrame: (width: cardWidth(), height: 270))
-////                    ForEach(0...9, id: \.self) { _ in
-////                        let result = Results.getModelResultBasic("")
-////                        OtherProductsViewCell(model: result, isLoading: viewModel.isLoading, cellFrame: (width: cardWidth(), height: 270))
-////                    }
                 }
             }
             .padding(.horizontal, 5)
@@ -42,7 +33,7 @@ struct ProductByCategoryView: View {
             viewModel.getProductsByCategory(categoryId: categoryId)
         }
         .popup(isPresented: $viewModel.shouldShowFuntionalityError) {
-            ErrorAlertView(isPresented: $viewModel.shouldShowFuntionalityError, text: Constants.messageErrorGeneric, image: Image("errorServiceGeneral"), confirm: {
+            ErrorAlertView(isPresented: $viewModel.shouldShowFuntionalityError, text: Constants.messageErrorGeneric, image: Image(Constants.imageErrorServiceGeneral), confirm: {
                 viewModel.shouldShowFuntionalityError = false
                 goToBack.wrappedValue.dismiss()
             })

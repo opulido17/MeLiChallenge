@@ -30,6 +30,7 @@ class HomeViewModel: ObservableObject {
                     self?.isLoading = false
                     self?.categoryList = categories
                 case .failure(_):
+                    self?.categoryList.removeAll()
                     self?.shouldShowFuntionalityError = true
                 }
             }
@@ -37,8 +38,9 @@ class HomeViewModel: ObservableObject {
     }
     
     func getCateriesForShimmer() {
-        for _ in 0...7 {
-            self.categoryList.append(CategoryModel.getModelCategoryBasic())
+        shouldShowFuntionalityError = false
+        for item in 0...7 {
+            self.categoryList.append(CategoryModel.getModelCategoryBasic(id: "\(item)"))
         }
     }
 }

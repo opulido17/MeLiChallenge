@@ -20,16 +20,16 @@ class ProductByCategoryTest: XCTestCase {
     }
     
     func test_LoadShimmerProductByCategorySuccessfully() {
-        viewModel.getProductsByCategory(categoryId: "")
+        viewModel.getProductsByCategory(categoryId: mockService.categoryId)
         XCTAssertTrue(viewModel.isLoading)
-        XCTAssertEqual(viewModel.results.count, 10)
+        XCTAssertEqual(viewModel.results.count, 6)
     }
     
     func test_GetProductByCategorySuccessfully() {
-        let controlExpectation: XCTestExpectation = expectation(description: "control expectation")
-        viewModel.getProductsByCategory(categoryId: "")
+        let controlExpectation: XCTestExpectation = expectation(description: "Expectation get product by category successfully")
+        viewModel.getProductsByCategory(categoryId: mockService.categoryId)
         XCTAssertTrue(viewModel.isLoading)
-        XCTAssertEqual(viewModel.results.count, 10)
+        XCTAssertEqual(viewModel.results.count, 6)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             controlExpectation.fulfill()
         }
@@ -39,14 +39,15 @@ class ProductByCategoryTest: XCTestCase {
     }
     
     func test_GetProductByCategoryFailure() {
-        let controlExpectation: XCTestExpectation = expectation(description: "control expectation")
+        let controlExpectation: XCTestExpectation = expectation(description: "Expectation get product by category failure")
         mockService.isResultSuccessfully = false
-        viewModel.getProductsByCategory(categoryId: "")
+        viewModel.getProductsByCategory(categoryId: mockService.categoryId)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             controlExpectation.fulfill()
         }
         wait(for: [controlExpectation], timeout: 2)
         XCTAssertTrue(viewModel.shouldShowFuntionalityError)
-        //XCTAssertTrue(viewModel.results.isEmpty) // Todo: Validar cuando falla el servicio dejar el emptyState en todos los escenarios
+        XCTAssertTrue(viewModel.isLoading)
+        XCTAssertEqual(viewModel.results.count, 6)
     }
 }

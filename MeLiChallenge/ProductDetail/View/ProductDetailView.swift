@@ -192,12 +192,12 @@ struct ProductDetailView: View {
             }
         }
         .popup(isPresented: $viewModel.shouldShowDescriptionFuntionalityError) {
-            ErrorAlertView(isPresented: $viewModel.shouldShowDescriptionFuntionalityError, text: Constants.messageErrorDescription, image: Image("errorServiceGeneral"), confirm: {
+            ErrorAlertView(isPresented: $viewModel.shouldShowDescriptionFuntionalityError, text: Constants.messageErrorDescription, image: Image(Constants.imageErrorServiceGeneral), confirm: {
                 viewModel.shouldShowDescriptionFuntionalityError = false
             })
         }
         .popup(isPresented: $viewModel.shouldShowSellerFuntionalityError) {
-            ErrorAlertView(isPresented: $viewModel.shouldShowSellerFuntionalityError, text: Constants.messageErrorSeller, image: Image("errorServiceGeneral"), confirm: {
+            ErrorAlertView(isPresented: $viewModel.shouldShowSellerFuntionalityError, text: Constants.messageErrorSeller, image: Image(Constants.imageErrorServiceGeneral), confirm: {
                 viewModel.shouldShowSellerFuntionalityError = false
             })
         }

@@ -50,6 +50,7 @@ class ProductHomeViewModel: ObservableObject {
                     self?.searchResult = result
                     self?.isLoadingReload = false
                 case .failure(_):
+                    self?.limit -= 10
                     self?.shouldShowFuntionalityReloadError = true
                     self?.searchResult.removeLast()
                 }

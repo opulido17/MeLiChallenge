@@ -26,7 +26,7 @@ class HomeTest: XCTestCase {
     }
     
     func test_GetCategorySuccessfully() {
-        let controlExpectation: XCTestExpectation = expectation(description: "control expectation")
+        let controlExpectation: XCTestExpectation = expectation(description: "Expectation get category successfully")
         viewModel.getCategories()
         XCTAssertTrue(viewModel.isLoading)
         XCTAssertEqual(viewModel.categoryList.count, 8)
@@ -34,12 +34,29 @@ class HomeTest: XCTestCase {
             controlExpectation.fulfill()
         }
         wait(for: [controlExpectation], timeout: 2)
+        XCTAssertEqual(viewModel.categoryList.count, 3)
+    }
+    
+    func test_GetCategoryTryAgainSuccessfully() {
+        test_GetCategoryFailure()
+        
+        let expectationSuccessfully: XCTestExpectation = expectation(description: "Expectation Successfully try again")
+        mockService.isResultSuccessfully = true
+        viewModel.getCategories()
+        XCTAssertTrue(viewModel.isLoading)
+        XCTAssertEqual(viewModel.categoryList.count, 8)
+        XCTAssertFalse(viewModel.shouldShowFuntionalityError)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            expectationSuccessfully.fulfill()
+        }
+        wait(for: [expectationSuccessfully], timeout: 2)
         XCTAssertFalse(viewModel.isLoading)
+        XCTAssertFalse(viewModel.shouldShowFuntionalityError)
         XCTAssertEqual(viewModel.categoryList.count, 3)
     }
     
     func test_GetCategoryFailure() {
-        let controlExpectation: XCTestExpectation = expectation(description: "control expectation")
+        let controlExpectation: XCTestExpectation = expectation(description: "Expectation get category failure")
         mockService.isResultSuccessfully = false
         viewModel.getCategories()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -47,5 +64,6 @@ class HomeTest: XCTestCase {
         }
         wait(for: [controlExpectation], timeout: 2)
         XCTAssertTrue(viewModel.shouldShowFuntionalityError)
+        XCTAssertEqual(viewModel.categoryList.count, 0)
     }
 }

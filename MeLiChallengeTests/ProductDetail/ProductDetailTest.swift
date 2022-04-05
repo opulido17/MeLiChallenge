@@ -20,27 +20,27 @@ class ProductDetailTest: XCTestCase {
     }
     
     func test_GetDrescriptionSuccessfully() {
-        viewModel.getProductDescription(itemId: "")
+        viewModel.getProductDescription(itemId: mockService.productId)
         XCTAssertFalse(viewModel.isLoadingDescription)
         XCTAssertNotNil(viewModel.descriptionModel)
     }
     
     func test_GetDrescriptionFailure() {
         mockService.isResultSuccessfully = false
-        viewModel.getProductDescription(itemId: "")
+        viewModel.getProductDescription(itemId: mockService.productId)
         XCTAssertTrue(viewModel.shouldShowDescriptionFuntionalityError)
         XCTAssertNil(viewModel.descriptionModel)
     }
     
     func test_GetInfoSellerSuccessfully() {
-        viewModel.getInfoSellerId(sellerId: 0)
+        viewModel.getInfoSellerId(sellerId: mockService.sellerId)
         XCTAssertFalse(viewModel.isLoadingSeller)
         XCTAssertNotNil(viewModel.sellerModel)
     }
     
     func test_GetInfoSellerFailure() {
         mockService.isResultSuccessfully = false
-        viewModel.getInfoSellerId(sellerId: 0)
+        viewModel.getInfoSellerId(sellerId: mockService.sellerId)
         XCTAssertTrue(viewModel.shouldShowSellerFuntionalityError)
         XCTAssertNil(viewModel.sellerModel)
     }

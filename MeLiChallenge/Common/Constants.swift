@@ -20,6 +20,7 @@ public enum Constants {
     
     // MARK: - DefaultImage
     static let defaultImage = "https://cdn1.iconfinder.com/data/icons/business-company-1/500/image-512.png"
+    static let imageErrorServiceGeneral = "errorServiceGeneral"
     
     // MARK: - Message Error
     static let messageErrorGeneric = "En estos momentos la funcionalidad no está disponible. Por favor, ingresa más tarde."

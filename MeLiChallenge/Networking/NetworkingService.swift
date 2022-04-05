@@ -47,7 +47,7 @@ final class NetworkingService: NetworkingServicesProtocol {
         let urlRequest = limitReplace.replacingOccurrences(of: " ", with: "%20") // todo : - No deberia ser de esta forma -> Pendiente
         AF.request(urlRequest, method: .get).validate(statusCode: Constants.serviceStatusCodeOk).responseDecodable(of: SearchResult.self) { response in
             if let searchResult = response.value {
-                if searchResult.results?.isEmpty ?? false {
+                if searchResult.results?.isEmpty ?? true {
                     completion(.failure("Empty List"))
                 } else {
                     completion(.success(searchResult.results ?? [Results]()))

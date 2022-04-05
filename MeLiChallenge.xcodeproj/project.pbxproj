@@ -26,6 +26,8 @@
 		2389C6E927FAA7FC00DEDD92 /* MockServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2389C6E827FAA7FC00DEDD92 /* MockServices.swift */; };
 		2389C6EC27FAA90B00DEDD92 /* ProductSearchTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2389C6EB27FAA90B00DEDD92 /* ProductSearchTest.swift */; };
 		2389C6EF27FAAA1300DEDD92 /* ProductDetailTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2389C6EE27FAAA1300DEDD92 /* ProductDetailTest.swift */; };
+		2389C6F127FBA50F00DEDD92 /* EmptyStateGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2389C6F027FBA50F00DEDD92 /* EmptyStateGeneric.swift */; };
+		2389C6F427FBEF3E00DEDD92 /* StringTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2389C6F327FBEF3E00DEDD92 /* StringTest.swift */; };
 		2391F96427EFCB3100315D35 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2391F96327EFCB3100315D35 /* HeaderView.swift */; };
 		2391F96627EFD47600315D35 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2391F96527EFD47600315D35 /* SearchView.swift */; };
 		23AE371427F2CC57006AA5CC /* HomeViewCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AE371327F2CC57006AA5CC /* HomeViewCategoryModel.swift */; };
@@ -99,6 +101,8 @@
 		2389C6E827FAA7FC00DEDD92 /* MockServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockServices.swift; sourceTree = "<group>"; };
 		2389C6EB27FAA90B00DEDD92 /* ProductSearchTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSearchTest.swift; sourceTree = "<group>"; };
 		2389C6EE27FAAA1300DEDD92 /* ProductDetailTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailTest.swift; sourceTree = "<group>"; };
+		2389C6F027FBA50F00DEDD92 /* EmptyStateGeneric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateGeneric.swift; sourceTree = "<group>"; };
+		2389C6F327FBEF3E00DEDD92 /* StringTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringTest.swift; sourceTree = "<group>"; };
 		2391F96327EFCB3100315D35 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		2391F96527EFD47600315D35 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		23AE371327F2CC57006AA5CC /* HomeViewCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewCategoryModel.swift; sourceTree = "<group>"; };
@@ -278,11 +282,20 @@
 			path = ProductDetail;
 			sourceTree = "<group>";
 		};
+		2389C6F227FBEF2000DEDD92 /* StringExtension */ = {
+			isa = PBXGroup;
+			children = (
+				2389C6F327FBEF3E00DEDD92 /* StringTest.swift */,
+			);
+			path = StringExtension;
+			sourceTree = "<group>";
+		};
 		2391F96227EFCB1A00315D35 /* ReusableView */ = {
 			isa = PBXGroup;
 			children = (
 				2391F96327EFCB3100315D35 /* HeaderView.swift */,
 				2391F96527EFD47600315D35 /* SearchView.swift */,
+				2389C6F027FBA50F00DEDD92 /* EmptyStateGeneric.swift */,
 			);
 			path = ReusableView;
 			sourceTree = "<group>";
@@ -382,6 +395,7 @@
 		23C3470327E78B4500271676 /* MeLiChallengeTests */ = {
 			isa = PBXGroup;
 			children = (
+				2389C6F227FBEF2000DEDD92 /* StringExtension */,
 				2389C6ED27FAA9F900DEDD92 /* ProductDetail */,
 				2389C6EA27FAA8BC00DEDD92 /* ProductSearch */,
 				2389C6E527FAA73400DEDD92 /* ProductByCategory */,
@@ -814,6 +828,7 @@
 			files = (
 				23AE371427F2CC57006AA5CC /* HomeViewCategoryModel.swift in Sources */,
 				23C13F0627EAD41A0032C507 /* SellerModel.swift in Sources */,
+				2389C6F127FBA50F00DEDD92 /* EmptyStateGeneric.swift in Sources */,
 				23DCE52327F2C46600D2F731 /* HomeView.swift in Sources */,
 				236FB63327ED7BBD00C06E01 /* Colors.swift in Sources */,
 				23DCE50D27F29F5B00D2F731 /* NetworkingServicesProtocol.swift in Sources */,
@@ -854,6 +869,7 @@
 				2389C6EF27FAAA1300DEDD92 /* ProductDetailTest.swift in Sources */,
 				2389C6EC27FAA90B00DEDD92 /* ProductSearchTest.swift in Sources */,
 				2389C6E727FAA79000DEDD92 /* ProductByCategoryTest.swift in Sources */,
+				2389C6F427FBEF3E00DEDD92 /* StringTest.swift in Sources */,
 				2389C6E027FA98A800DEDD92 /* HomeTest.swift in Sources */,
 				23C3470527E78B4500271676 /* MeLiChallengeTests.swift in Sources */,
 				2389C6E927FAA7FC00DEDD92 /* MockServices.swift in Sources */,

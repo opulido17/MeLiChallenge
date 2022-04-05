@@ -36,8 +36,8 @@ class ProductByCategoryViewModel: ObservableObject {
     }
     
     func getProductByCategoryForShimmer() {
-        for _ in 0...9 {
-            let result = Results.getModelResultBasic("")
+        for item in 0...5 {
+            let result = Results.getModelResultBasic("\(item)")
             self.results.append(result)
         }
     }
