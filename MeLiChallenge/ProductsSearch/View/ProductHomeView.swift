@@ -23,8 +23,8 @@ struct ProductHomeView: View {
             VStack(spacing: 0) {
                 HStack(spacing: 4) {
                     Image(systemName: "arrow.left")
-                        .foregroundColor(.white)
-                        .font(.system(size: 20))
+                        .foregroundColor(Color.white)
+                        .font(Font.custom(FontName.bold.rawValue, size: 20))
                         .onTapGesture {
                             self.goBack.wrappedValue.dismiss()
                         }
@@ -65,13 +65,10 @@ struct ProductHomeView: View {
                                     }
                                     .frame(height: 150)
                                 } else {
-                                    if viewModel.isLoading {
+                                    NavigationLink(destination: ProductDetailView(model: result, viewModel: ProductDetailViewModel(itemId: result.id ?? "", sellerId: result.seller?.id ?? 0))) {
                                         ProductViewCell(model: result, isLoading: viewModel.isLoading)
-                                    } else {
-                                        NavigationLink(destination: ProductDetailView(model: result)) {
-                                            ProductViewCell(model: result, isLoading: viewModel.isLoading)
-                                        }
                                     }
+                                    .disabled(viewModel.isLoading)
                                 }
                             }
                         }
@@ -87,6 +84,7 @@ struct ProductHomeView: View {
             .edgesIgnoringSafeArea(.top)
         }
         .navigationBarHidden(true)
+        .navigationBarTitle("Test")
         .listStyle(GroupedListStyle())
     }
 }

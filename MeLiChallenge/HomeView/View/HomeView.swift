@@ -49,21 +49,22 @@ struct HomeView: View {
                                     NavigationLink(destination: ProductByCategoryView(categoryId: result.id, categoryName: result.name)) {
                                         HStack(spacing: 10) {
                                             Image(systemName: "chart.bar.doc.horizontal")
-                                                .foregroundColor(.blue)
+                                                .foregroundColor(Color.blue)
                                                 .font(.system(size: 20))
                                                 .skeleton(with: viewModel.isLoading, size: CGSize(width: 40, height: 40), transition: .slide)
                                             Text(result.name)
                                                 .font(Font.custom(FontName.regular.rawValue, size: 17))
                                                 .foregroundColor(CustomColor.darkGray)
-                                                .skeleton(with: viewModel.isLoading, transition: .slide)
+                                                .skeleton(with: viewModel.isLoading, size: CGSize(width: 250, height: 15), transition: .slide)
                                         }
                                         .padding()
                                     }
+                                    .disabled(viewModel.isLoading)
                                     Divider()
                                         .padding(.leading, 30)
                                 }
                             }
-                            .background(.white)
+                            .background(Color.white)
                             .cornerRadius(10)
                             .padding(10)
                             .shadow(radius: 2)

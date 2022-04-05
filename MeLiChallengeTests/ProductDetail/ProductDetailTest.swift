@@ -16,7 +16,7 @@ class ProductDetailTest: XCTestCase {
     override func setUp() {
         super.setUp()
         mockService = MockServices()
-        viewModel = .init(networkingService: mockService)
+        viewModel = .init(networkingService: mockService, itemId: mockService.productId, sellerId: mockService.sellerId)
     }
     
     func test_GetDrescriptionSuccessfully() {
@@ -29,7 +29,6 @@ class ProductDetailTest: XCTestCase {
         mockService.isResultSuccessfully = false
         viewModel.getProductDescription(itemId: mockService.productId)
         XCTAssertTrue(viewModel.shouldShowDescriptionFuntionalityError)
-        XCTAssertNil(viewModel.descriptionModel)
     }
     
     func test_GetInfoSellerSuccessfully() {
@@ -42,6 +41,5 @@ class ProductDetailTest: XCTestCase {
         mockService.isResultSuccessfully = false
         viewModel.getInfoSellerId(sellerId: mockService.sellerId)
         XCTAssertTrue(viewModel.shouldShowSellerFuntionalityError)
-        XCTAssertNil(viewModel.sellerModel)
     }
 }

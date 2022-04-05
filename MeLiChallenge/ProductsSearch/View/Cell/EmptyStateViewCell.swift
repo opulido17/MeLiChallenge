@@ -16,7 +16,7 @@ struct EmptyStateViewCell: View {
                     .frame(width: 90, height: 90)
                 Image(systemName: "magnifyingglass")
                     .font(.system(size: 40))
-                    .foregroundColor(.white)
+                    .foregroundColor(Color.white)
                     .padding()
             }
             .padding()

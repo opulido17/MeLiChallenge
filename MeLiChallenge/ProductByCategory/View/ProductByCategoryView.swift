@@ -19,9 +19,10 @@ struct ProductByCategoryView: View {
         ScrollView {
             LazyVGrid(columns: colums, spacing: 15) {
                 ForEach(self.viewModel.results, id: \.id) { result in
-                    NavigationLink(destination: ProductDetailView(goBack: _goToBack, viewModel: ProductDetailViewModel(), model: result)) {
+                    NavigationLink(destination: ProductDetailView(goBack: _goToBack, model: result, viewModel: ProductDetailViewModel(itemId: result.id ?? "", sellerId: result.seller?.id ?? 0))) {
                         OtherProductsViewCell(model: result, isLoading: viewModel.isLoading, cellFrame: (width: cardWidth(), height: 270))
                     }
+                    .disabled(viewModel.isLoading)
                 }
             }
             .padding(.horizontal, 5)

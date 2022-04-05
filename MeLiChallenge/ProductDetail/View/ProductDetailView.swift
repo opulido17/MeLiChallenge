@@ -12,11 +12,11 @@ import SkeletonUI
 struct ProductDetailView: View {
     
     @Environment(\.presentationMode) var goBack
-    @ObservedObject var viewModel = ProductDetailViewModel()
+    var model: Results
+    @ObservedObject var viewModel = ProductDetailViewModel(itemId: "", sellerId: 0)
     @State private var quantityModel: QuantityModel = QuantityModel()
     @State private var showBuyAlert: Bool = false
     @State private var showBuyAlertDone: Bool = false
-    var model: Results
     
     var body: some View {
         ScrollView(.vertical) {
@@ -60,11 +60,12 @@ struct ProductDetailView: View {
                         }
                     }
                     .padding(.top, 1)
+                    .accessibility(hidden: viewModel.shouldShowSellerFuntionalityError)
                     .skeleton(with: viewModel.isLoadingSeller, transition: .slide)
                 }
                 // MARK: - QuantityButton
                 Group {
-                    if (self.model.availableQuantity ?? 0) > 0 {
+                    if (self.model.availableQuantity ?? 0) > 1 {
                         VStack {}.frame(minWidth: 0, maxWidth: .infinity, minHeight: 1).background(.gray).padding(.vertical, 10)
                         VStack {
                             Button {
@@ -82,7 +83,7 @@ struct ProductDetailView: View {
                                         .foregroundColor(CustomColor.lightText)
                                     Spacer()
                                     Image(systemName: "chevron.right")
-                                        .foregroundColor(.blue)
+                                        .foregroundColor(Color.blue)
                                         .font(.system(size: 20))
                                 }
                                 .padding()
@@ -91,7 +92,6 @@ struct ProductDetailView: View {
                             .background(CustomColor.lightGray)
                             .cornerRadius(7)
                         }
-                        .padding(.horizontal, 40)
                         VStack {}.frame(minWidth: 0, maxWidth: .infinity, minHeight: 1).background(.gray).padding(.vertical, 10)
                     } else {
                         Text("¡Ultimo(a) disponible!")
@@ -106,12 +106,12 @@ struct ProductDetailView: View {
                             VStack {
                                 Text("Comprar Ahora")
                                     .padding()
-                                    .foregroundColor(.white)
+                                    .foregroundColor(Color.white)
                                     .font(Font.custom(FontName.medium.rawValue, size: 14))
                             }
                             .frame(minWidth: 0, maxWidth: .infinity)
                         }
-                        .background(.blue)
+                        .background(Color.blue)
                         .cornerRadius(7)
                         if let url = URL(string: self.model.permalink ?? "") {
                             Link(destination: url) {
@@ -120,7 +120,7 @@ struct ProductDetailView: View {
                                     .frame(maxWidth: .infinity)
                                     .background(CustomColor.gentleBlue)
                                     .font(Font.custom(FontName.medium.rawValue, size: 14))
-                                    .foregroundColor(.blue)
+                                    .foregroundColor(Color.blue)
                                     .cornerRadius(7)
                             }
                         }
@@ -131,7 +131,7 @@ struct ProductDetailView: View {
                                 .font(.system(size: 12))
                             Text("Devolución gratis.")
                                 .font(Font.custom(FontName.regular.rawValue, size: 12))
-                                .foregroundColor(.blue)
+                                .foregroundColor(Color.blue)
                             + Text(" Tienes 30 días desde que lo recibes.")
                                 .font(Font.custom(FontName.regular.rawValue, size: 12))
                                 .foregroundColor(CustomColor.opaqueGray)
@@ -144,7 +144,7 @@ struct ProductDetailView: View {
                                 .font(.system(size: 12))
                             Text("Compra Protegida,")
                                 .font(Font.custom(FontName.regular.rawValue, size: 12))
-                                .foregroundColor(.blue)
+                                .foregroundColor(Color.blue)
                             + Text(" recibe el producto que esperabas o te devolvemos tu dinero.")
                                 .font(Font.custom(FontName.regular.rawValue, size: 12))
                                 .foregroundColor(CustomColor.opaqueGray)
@@ -160,6 +160,7 @@ struct ProductDetailView: View {
                         .padding(.top, 3)
                         .skeleton(with: viewModel.isLoadingDescription, transition: .slide)
                 }
+                .accessibility(hidden: viewModel.shouldShowDescriptionFuntionalityError)
                 Group {
                     Text("Otros productos")
                         .font(Font.custom(FontName.bold.rawValue, size: 16))
@@ -167,25 +168,21 @@ struct ProductDetailView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(self.viewModel.sellerModel?.results ?? [Results](), id: \.id) { product in
-                                NavigationLink(destination: ProductDetailView(model: product)) {
-                                    OtherProductsViewCell(model: product, isLoading: viewModel.isLoadingDescription)
+                                NavigationLink(destination: ProductDetailView(model: product, viewModel: ProductDetailViewModel(itemId: product.id ?? "", sellerId: product.seller?.id ?? 0))) {
+                                    OtherProductsViewCell(model: product, isLoading: viewModel.isLoadingSeller)
                                         .padding(.horizontal, 5)
                                         .padding(.vertical, 7)
                                 }
+                                .disabled(viewModel.isLoadingSeller)
                             }
                         }
                     }
                 }
+                .accessibility(hidden: viewModel.shouldShowSellerFuntionalityError)
             }
-            .navigationTitle("Detail")
+            .navigationTitle("Detalle")
             .padding()
             .onAppear {
-                DispatchQueue.main.async {
-                    self.viewModel.getProductDescription(itemId: self.model.id ?? "")
-                }
-                DispatchQueue.main.async {
-                    self.viewModel.getInfoSellerId(sellerId: self.model.seller?.id ?? 0)
-                }
                 for i in 1...(model.availableQuantity ?? 0) {
                     quantityModel.quantityArray.append(i)
                 }
@@ -202,7 +199,7 @@ struct ProductDetailView: View {
             })
         }
         .popup(isPresented: self.$showBuyAlert) {
-            ErrorAlertView(isPresented: self.$showBuyAlert, text: "¿Estas seguro que deseas realizar la compra de este producto? \n Cantidad: \(self.quantityModel.quantity)", image: Image("iconQuestion"), confirm: {
+            ErrorAlertView(isPresented: self.$showBuyAlert, text: "¿Estas seguro que deseas realizar la compra de este producto? \n\n Cantidad: \(self.quantityModel.quantity)", image: Image("iconQuestion"), confirm: {
                 self.showBuyAlert.toggle()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     self.showBuyAlertDone.toggle()
@@ -212,7 +209,7 @@ struct ProductDetailView: View {
             }
         }
         .popup(isPresented: self.$showBuyAlertDone) {
-            ErrorAlertView(isPresented: self.$showBuyAlertDone, text: "¡Felicitaciones!\nLa compra se ha realizado de forma exitos", image: Image("iconRight"), confirm: {
+            ErrorAlertView(isPresented: self.$showBuyAlertDone, text: "¡Felicitaciones!\nLa compra se ha realizado de forma exitosa", image: Image("iconRight"), confirm: {
                 self.goBack.wrappedValue.dismiss()
             })
         }

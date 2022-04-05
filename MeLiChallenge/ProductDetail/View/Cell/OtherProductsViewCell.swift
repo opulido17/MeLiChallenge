@@ -30,7 +30,7 @@ struct OtherProductsViewCell: View {
                     .font(Font.custom(FontName.medium.rawValue, size: 18))
                     .foregroundColor(CustomColor.darkGray)
                     .multilineTextAlignment(.leading)
-                    .skeleton(with: isLoading, size: CGSize(width: 170, height: 13), transition: .slide)
+                    .skeleton(with: isLoading, size: CGSize(width: 165, height: 13), transition: .slide)
                 let quantity = self.model.installments?.quantity ?? 0
                 let amount = self.model.installments?.amount ?? 0
                 Text("\(quantity)x \(String(amount).toPriceNumber())")
@@ -51,7 +51,7 @@ struct OtherProductsViewCell: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(width: cellFrame.width, height: cellFrame.height)
-        .background(.white)
+        .background(Color.white)
         .cornerRadius(7)
         .shadow(radius: 3.0)
     }
