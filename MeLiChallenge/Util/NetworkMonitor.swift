@@ -25,9 +25,6 @@ class NetworkMonitor {
                 self.status = pathUpdateHandler.status
                 DispatchQueue.main.async {
                     self.delegate?.networkMonitor(didChangeStatus: pathUpdateHandler.status)
-                    if pathUpdateHandler.status != .satisfied {
-                        //self.showNetworkErrorMessage()
-                    }
                 }
             }
         }
@@ -40,15 +37,10 @@ class NetworkMonitor {
     
     func isNetworkAvailable() -> Bool {
         if status != .satisfied {
-            //showNetworkErrorMessage()
             return false
         }
         return true
     }
-    
-//    private func showNetworkErrorMessage() {
-//        ErrorAlertView(isPresented: true, text: <#T##String#>, image: <#T##Image?#>, confirm: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>, cancel: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
-//    }
 }
 
 protocol NetworkMonitorDelegate: AnyObject {

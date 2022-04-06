@@ -83,6 +83,9 @@ struct HomeView: View {
             .onAppear {
                 self.viewModel.getCategories()
             }
+            .popup(isPresented: $viewModel.shouldShowNetworkError) {
+                ErrorAlertView(isPresented: $viewModel.shouldShowNetworkError, text: Constants.messageNetworkError, image: nil, confirm: { viewModel.shouldShowNetworkError = false })
+            }
         }
     }
 }

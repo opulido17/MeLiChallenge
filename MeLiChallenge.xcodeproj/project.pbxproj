@@ -37,7 +37,6 @@
 		23C13F0027EACBA30032C507 /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C13EFF27EACBA30032C507 /* ProductDetailViewModel.swift */; };
 		23C13F0427EAD4080032C507 /* DescriptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C13F0327EAD4080032C507 /* DescriptionModel.swift */; };
 		23C13F0627EAD41A0032C507 /* SellerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C13F0527EAD41A0032C507 /* SellerModel.swift */; };
-		23C13F0927EAE16E0032C507 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C13F0827EAE16E0032C507 /* LoadingView.swift */; };
 		23C346F427E78B4300271676 /* MeLiChallengeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C346F327E78B4300271676 /* MeLiChallengeApp.swift */; };
 		23C346F827E78B4500271676 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23C346F727E78B4500271676 /* Assets.xcassets */; };
 		23C346FB27E78B4500271676 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23C346FA27E78B4500271676 /* Preview Assets.xcassets */; };
@@ -112,7 +111,6 @@
 		23C13EFF27EACBA30032C507 /* ProductDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewModel.swift; sourceTree = "<group>"; };
 		23C13F0327EAD4080032C507 /* DescriptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionModel.swift; sourceTree = "<group>"; };
 		23C13F0527EAD41A0032C507 /* SellerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellerModel.swift; sourceTree = "<group>"; };
-		23C13F0827EAE16E0032C507 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		23C346F027E78B4300271676 /* MeLiChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeLiChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23C346F327E78B4300271676 /* MeLiChallengeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeLiChallengeApp.swift; sourceTree = "<group>"; };
 		23C346F727E78B4500271676 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -188,7 +186,6 @@
 			isa = PBXGroup;
 			children = (
 				2391F96227EFCB1A00315D35 /* ReusableView */,
-				23C13F0727EAE14B0032C507 /* LoadingView */,
 				23C13EF827EAC25D0032C507 /* Extension */,
 				23C13EFB27EACA350032C507 /* Constants.swift */,
 				236FB63227ED7BBD00C06E01 /* Colors.swift */,
@@ -332,14 +329,6 @@
 				236FB63027ED76DF00C06E01 /* ActionAddToCart.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		23C13F0727EAE14B0032C507 /* LoadingView */ = {
-			isa = PBXGroup;
-			children = (
-				23C13F0827EAE16E0032C507 /* LoadingView.swift */,
-			);
-			path = LoadingView;
 			sourceTree = "<group>";
 		};
 		23C346E727E78B4300271676 = {
@@ -856,7 +845,6 @@
 				2329D72F27EC251100A3ED8E /* EmptyStateViewCell.swift in Sources */,
 				2385C0BE27F14E0B00420C34 /* Fonts.swift in Sources */,
 				23DCE51827F2B7CC00D2F731 /* ErrorAlertView.swift in Sources */,
-				23C13F0927EAE16E0032C507 /* LoadingView.swift in Sources */,
 				23C13EFC27EACA350032C507 /* Constants.swift in Sources */,
 				2391F96427EFCB3100315D35 /* HeaderView.swift in Sources */,
 			);

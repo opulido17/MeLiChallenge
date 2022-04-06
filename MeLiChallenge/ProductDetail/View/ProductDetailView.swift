@@ -61,7 +61,7 @@ struct ProductDetailView: View {
                     }
                     .padding(.top, 1)
                     .accessibility(hidden: viewModel.shouldShowSellerFuntionalityError)
-                    .skeleton(with: viewModel.isLoadingSeller, transition: .slide)
+                    .skeleton(with: viewModel.isLoadingSeller, size: CGSize(width: 150, height: 35), transition: .slide)
                 }
                 // MARK: - QuantityButton
                 Group {
@@ -162,23 +162,25 @@ struct ProductDetailView: View {
                 }
                 .accessibility(hidden: viewModel.shouldShowDescriptionFuntionalityError)
                 Group {
-                    Text("Otros productos")
-                        .font(Font.custom(FontName.bold.rawValue, size: 16))
-                        .padding(.top)
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack {
-                            ForEach(self.viewModel.sellerModel?.results ?? [Results](), id: \.id) { product in
-                                NavigationLink(destination: ProductDetailView(model: product, viewModel: ProductDetailViewModel(itemId: product.id ?? "", sellerId: product.seller?.id ?? 0))) {
-                                    OtherProductsViewCell(model: product, isLoading: viewModel.isLoadingSeller)
-                                        .padding(.horizontal, 5)
-                                        .padding(.vertical, 7)
+                    VStack(alignment: .leading) {
+                        Text("Otros productos")
+                            .font(Font.custom(FontName.bold.rawValue, size: 16))
+                            .padding(.top)
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(self.viewModel.sellerModel?.results ?? [Results](), id: \.id) { product in
+                                    NavigationLink(destination: ProductDetailView(model: product, viewModel: ProductDetailViewModel(itemId: product.id ?? "", sellerId: product.seller?.id ?? 0))) {
+                                        OtherProductsViewCell(model: product, isLoading: viewModel.isLoadingSeller)
+                                            .padding(.horizontal, 5)
+                                            .padding(.vertical, 7)
+                                    }
+                                    .disabled(viewModel.isLoadingSeller)
                                 }
-                                .disabled(viewModel.isLoadingSeller)
                             }
                         }
                     }
+                    .accessibility(hidden: viewModel.shouldShowSellerFuntionalityError)
                 }
-                .accessibility(hidden: viewModel.shouldShowSellerFuntionalityError)
             }
             .navigationTitle("Detalle")
             .padding()

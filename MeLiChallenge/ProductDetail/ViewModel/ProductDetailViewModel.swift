@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 
 class ProductDetailViewModel: ObservableObject {
-    
+    // MARK: - Properties class
     @Published var descriptionModel: DescriptionModel?
     @Published var sellerModel: SellerModel?
     @Published var isLoadingDescription: Bool = true
@@ -20,6 +20,7 @@ class ProductDetailViewModel: ObservableObject {
     
     private let networkingService: NetworkingServicesProtocol
     
+    // MARK: - init
     init(networkingService: NetworkingServicesProtocol = NetworkingService(), itemId: String, sellerId: Int) {
         self.networkingService = networkingService
         
@@ -27,8 +28,9 @@ class ProductDetailViewModel: ObservableObject {
         self.getInfoSellerId(sellerId: sellerId)
     }
     
+    // MARK: - Functions
     func getProductDescription(itemId: String) {
-        self.networkingService.getProductDescription(itemId: itemId) { [weak self] result in
+        networkingService.getProductDescription(itemId: itemId) { [weak self] result in
             switch result {
             case .success(let descriptionModel):
                 self?.descriptionModel = descriptionModel
@@ -40,7 +42,7 @@ class ProductDetailViewModel: ObservableObject {
     }
     
     func getInfoSellerId(sellerId: Int) {
-        self.networkingService.getInfoSellerId(sellerId: sellerId) { [weak self] result in
+        networkingService.getInfoSellerId(sellerId: sellerId) { [weak self] result in
             switch result {
             case .success(let sellerModel):
                 self?.sellerModel = sellerModel

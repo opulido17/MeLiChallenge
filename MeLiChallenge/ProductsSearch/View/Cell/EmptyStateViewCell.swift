@@ -31,6 +31,9 @@ struct EmptyStateViewCell: View {
                 .padding(.vertical, 5)
                 .multilineTextAlignment(.center)
         }
+        .onAppear {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
     }
 }
 

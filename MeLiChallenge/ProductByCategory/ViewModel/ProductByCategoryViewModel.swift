@@ -9,17 +9,19 @@ import Foundation
 import Combine
 
 class ProductByCategoryViewModel: ObservableObject {
-    
+    // MARK: - Properties class
     @Published var results: [Results] = [Results]()
     @Published var shouldShowFuntionalityError: Bool = false
     @Published var isLoading: Bool = true
     
     private let networkingService: NetworkingServicesProtocol
     
+    // MARK: - init
     init(networkingService: NetworkingServicesProtocol = NetworkingService()) {
         self.networkingService = networkingService
     }
     
+    // MARK: - Functions
     func getProductsByCategory(categoryId: String) {
         getProductByCategoryForShimmer()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

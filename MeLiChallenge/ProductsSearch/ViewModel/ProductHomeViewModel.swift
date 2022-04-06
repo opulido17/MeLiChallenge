@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 
 class ProductHomeViewModel: ObservableObject {
-    
+    // MARK: - Properties class
     @Published var searchResult: [Results] = [Results]()
     @Published var limit: Int = 10
     @Published var shouldShowFuntionalityError: Bool = false
@@ -20,10 +20,12 @@ class ProductHomeViewModel: ObservableObject {
     
     private let networkingService: NetworkingServicesProtocol
     
+    // MARK: - init
     init(networkingService: NetworkingServicesProtocol = NetworkingService()) {
         self.networkingService = networkingService
     }
     
+    // MARK: - Fuctions
     func searchProduct(searchText: String) {
         resetData()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -40,9 +42,7 @@ class ProductHomeViewModel: ObservableObject {
     }
     
     func updateSearchProduct(searchText: String) {
-        withAnimation(Animation.linear(duration: 0.5).repeatForever(autoreverses: false)) {
-            resetDataReload()
-        }
+        resetDataReload()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) {
             self.networkingService.getProdcutsSearchBar(searchText: searchText, limit: self.limit) { [weak self] result in
                 switch result {

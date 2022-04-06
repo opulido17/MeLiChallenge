@@ -78,9 +78,25 @@
             filePath = "MeLiChallenge/ProductByCategory/ViewModel/ProductByCategoryViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
             landmarkName = "getProductsByCategory(categoryId:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AE578D5C-C09E-4C49-B8DF-D0B9FA07B7DB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeLiChallenge/ProductDetail/ViewModel/ProductDetailViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "getInfoSellerId(sellerId:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -26,4 +26,5 @@ public enum Constants {
     static let messageErrorGeneric = "En estos momentos la funcionalidad no está disponible. Por favor, ingresa más tarde."
     static let messageErrorDescription = "Hemos tenido inconvenientes para obtener la descripción de este producto, por favor, intentelo mas tarde."
     static let messageErrorSeller = "Hemos tenido inconvenientes para obtener la información de su vendedor, por favor, intentelo mas tarde."
+    static let messageNetworkError = "Parece que tienes problema de conexión. Asegurate de que estes conectado a internet."
 }

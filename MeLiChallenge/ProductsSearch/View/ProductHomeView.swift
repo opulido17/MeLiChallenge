@@ -84,7 +84,7 @@ struct ProductHomeView: View {
             .edgesIgnoringSafeArea(.top)
         }
         .navigationBarHidden(true)
-        .navigationBarTitle("Test")
+        .navigationBarTitle("Busqueda")
         .listStyle(GroupedListStyle())
     }
 }
