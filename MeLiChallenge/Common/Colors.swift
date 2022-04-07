@@ -29,7 +29,7 @@ enum CustomColor {
     static let mediumText = Color(#colorLiteral(red: 0.462745098, green: 0.4509803922, blue: 0.4549019608, alpha: 1))
     static let darkText = Color(#colorLiteral(red: 0.137254902, green: 0.1215686275, blue: 0.1254901961, alpha: 1))
     static let darkBlur = Color(#colorLiteral(red: 0.137254902, green: 0.1215686275, blue: 0.1254901961, alpha: 0.5))
-    static let lightYellow = Color(#colorLiteral(red: 1, green: 0.9450980392, blue: 0.3490196078, alpha: 1))
+    static let lightYellow = Color(#colorLiteral(red: 1, green: 0.8823529412, blue: 0.09411764706, alpha: 1))
     static let clearBackground = Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1))
     
 }

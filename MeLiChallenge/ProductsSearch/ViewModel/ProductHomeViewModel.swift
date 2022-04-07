@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 
 class ProductHomeViewModel: ObservableObject {
-    
+    // MARK: - Properties class
     @Published var searchResult: [Results] = [Results]()
     @Published var limit: Int = 10
     @Published var shouldShowFuntionalityError: Bool = false
@@ -20,18 +20,20 @@ class ProductHomeViewModel: ObservableObject {
     
     private let networkingService: NetworkingServicesProtocol
     
+    // MARK: - init
     init(networkingService: NetworkingServicesProtocol = NetworkingService()) {
         self.networkingService = networkingService
     }
     
+    // MARK: - Fuctions
     func searchProduct(searchText: String) {
         resetData()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.networkingService.getProdcutsSearchBar(searchText: searchText, limit: self.limit) { [weak self] result in
                 switch result {
                 case .success(let result):
-                    self?.searchResult = result
                     self?.isLoading = false
+                    self?.searchResult = result
                 case .failure(_):
                     self?.shouldShowFuntionalityError = true
                 }
@@ -40,9 +42,7 @@ class ProductHomeViewModel: ObservableObject {
     }
     
     func updateSearchProduct(searchText: String) {
-        withAnimation(Animation.linear(duration: 0.5).repeatForever(autoreverses: false)) {
-            resetDataReload()
-        }
+        resetDataReload()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) {
             self.networkingService.getProdcutsSearchBar(searchText: searchText, limit: self.limit) { [weak self] result in
                 switch result {
@@ -50,6 +50,7 @@ class ProductHomeViewModel: ObservableObject {
                     self?.searchResult = result
                     self?.isLoadingReload = false
                 case .failure(_):
+                    self?.limit -= 10
                     self?.shouldShowFuntionalityReloadError = true
                     self?.searchResult.removeLast()
                 }
@@ -65,7 +66,7 @@ class ProductHomeViewModel: ObservableObject {
         limit = 10
         isLoading = true
         shouldShowFuntionalityError = false
-        searchResult.removeAll()
+        removeData()
         loadDataShimmer()
     }
     
@@ -82,7 +83,7 @@ class ProductHomeViewModel: ObservableObject {
         shouldShowFuntionalityReloadError = false
     }
     
-    private func loadDataShimmerUpdate() {
+    func loadDataShimmerUpdate() {
         self.searchResult.append(Results.getModelResultBasic("", true))
     }
 }

@@ -6,29 +6,28 @@
 //
 
 import SwiftUI
+import Network
 
 struct ProductByCategoryView: View {
     
     @Environment(\.presentationMode) var goToBack
     @ObservedObject var viewModel = ProductByCategoryViewModel()
+    @State private var isPresentedSearchBar: Bool = false
+    @State private var isPresentedProductDetail: Bool = false
+    @State private var result: Results?
     var categoryId: String
     var categoryName: String
     let colums: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     
     var body: some View {
         ScrollView {
+            NavigationLink(destination: ProductDetailView(viewModel: ProductDetailViewModel(itemId: result?.id ?? "", sellerId: result?.seller?.id ?? 0), model: result ?? Results.getModelResultBasic()), isActive: $isPresentedProductDetail) { EmptyView() }
             LazyVGrid(columns: colums, spacing: 15) {
-                if !viewModel.results.isEmpty {
-                    ForEach(self.viewModel.results, id: \.id) { result in
-                        NavigationLink(destination: ProductDetailView(goBack: _goToBack, viewModel: ProductDetailViewModel(), model: result)) {
-                            OtherProductsViewCell(model: result, isLoading: viewModel.isLoading, cellFrame: (width: cardWidth(), height: 270))
-                        }
-                    }
-                } else {
-                    ForEach(0...10, id: \.self) { _ in
-                        let result = Results(id: "", siteId: "", title: "", seller: nil, price: 0, prices: nil, salePrice: 0, currencyId: "", availableQuantity: 0, soldQuantity: 0, buyingMode: "", listingTypeId: "", stopTime: "", condition: "", permalink: "", thumbnail: "", acceptsMercadopago: false, installments: nil, attributes: nil, originalPrice: 0, categoryId: "", shimmer: false)
+                ForEach(self.viewModel.results, id: \.id) { result in
+                    NavigationLink(destination: ProductDetailView(viewModel: ProductDetailViewModel(itemId: result.id ?? "", sellerId: result.seller?.id ?? 0), model: result)) {
                         OtherProductsViewCell(model: result, isLoading: viewModel.isLoading, cellFrame: (width: cardWidth(), height: 270))
                     }
+                    .disabled(viewModel.isLoading)
                 }
             }
             .padding(.horizontal, 5)
@@ -36,15 +35,38 @@ struct ProductByCategoryView: View {
             .navigationTitle(categoryName)
             .navigationBarTitleDisplayMode(.inline)
         }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                viewModel.getProductsByCategory(categoryId: categoryId)
+        .navigationBarItems(trailing:
+            HStack {
+                Button {
+                    self.isPresentedSearchBar.toggle()
+                } label: {
+                    Image(systemName: "magnifyingglass")
+                        .resizable()
+                        .font(Font.system(size: 17))
+                        .foregroundColor(CustomColor.lightYellow)
+                }
             }
+        )
+        .onAppear {
+            viewModel.getProductsByCategory(categoryId: categoryId)
+        }
+        .popup(isPresented: $viewModel.shouldShowNetworkError) {
+            ErrorAlertView(isPresented: $viewModel.shouldShowNetworkError, text: Constants.messageNetworkError, image: nil, confirm: { viewModel.shouldShowNetworkError = false })
         }
         .popup(isPresented: $viewModel.shouldShowFuntionalityError) {
-            ErrorAlertView(isPresented: $viewModel.shouldShowFuntionalityError, text: Constants.messageErrorGeneric, image: Image("errorServiceGeneral"), confirm: {
+            ErrorAlertView(isPresented: $viewModel.shouldShowFuntionalityError, text: Constants.messageErrorGeneric, image: Image(Constants.imageErrorServiceGeneral), confirm: {
                 viewModel.shouldShowFuntionalityError = false
                 goToBack.wrappedValue.dismiss()
+            })
+        }
+        .fullScreenCover(isPresented: $isPresentedSearchBar) {
+            isPresentedProductDetail = false
+        } content: {
+            ProductHomeView(didGoToDetail: { result in
+                self.result = result
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.isPresentedProductDetail = true
+                }
             })
         }
     }

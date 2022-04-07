@@ -20,6 +20,7 @@ struct ProductViewCell: View {
                 VStack {
                     AnimatedImage(url: URL(string: self.model.thumbnail?.replaceHttpUrl() ?? Constants.defaultImage))
                         .resizable()
+                        .aspectRatio(contentMode: .fit)
                         .frame(width: 100, height: 100)
                         .cornerRadius(10)
                         .skeleton(with: isLoading, size: CGSize(width: 100, height: 100), transition: .slide)
@@ -64,7 +65,7 @@ struct ProductViewCell: View {
             }
         }
         .frame(maxHeight: 150)
-        .padding()
+        .padding([.leading, .top, .bottom])
     }
 }
 

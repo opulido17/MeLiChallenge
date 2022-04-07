@@ -10,19 +10,25 @@ import Combine
 import SwiftUI
 
 class ProductDetailViewModel: ObservableObject {
-    
+    // MARK: - Properties class
     @Published var descriptionModel: DescriptionModel?
     @Published var sellerModel: SellerModel?
     @Published var isLoadingDescription: Bool = true
     @Published var isLoadingSeller: Bool = true
     @Published var shouldShowDescriptionFuntionalityError: Bool = false
     @Published var shouldShowSellerFuntionalityError: Bool = false
+    
     private let networkingService: NetworkingServicesProtocol
     
-    init(networkingService: NetworkingServicesProtocol = NetworkingService()) {
+    // MARK: - init
+    init(networkingService: NetworkingServicesProtocol = NetworkingService(), itemId: String, sellerId: Int) {
         self.networkingService = networkingService
+        
+        self.getProductDescription(itemId: itemId)
+        self.getInfoSellerId(sellerId: sellerId)
     }
     
+    // MARK: - Functions
     func getProductDescription(itemId: String) {
         networkingService.getProductDescription(itemId: itemId) { [weak self] result in
             switch result {

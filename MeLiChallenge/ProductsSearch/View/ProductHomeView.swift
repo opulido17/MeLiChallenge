@@ -17,17 +17,19 @@ struct ProductHomeView: View {
     @State private var time = Timer.publish(every: 0.1, on: .main, in: .tracking).autoconnect()
     var didTapSearchBar: (() -> Void)?
     var didStartSearch: ((String) -> Void)?
+    var didGoToDetail: ((Results) -> Void)?
     
     var body: some View {
         VStack {
             VStack(spacing: 0) {
-                HStack(spacing: 4) {
+                HStack(spacing: 6) {
                     Image(systemName: "arrow.left")
-                        .foregroundColor(.white)
-                        .font(.system(size: 20))
+                        .foregroundColor(Color.white)
+                        .font(Font.custom(FontName.bold.rawValue, size: 20))
                         .onTapGesture {
                             self.goBack.wrappedValue.dismiss()
                         }
+                        .padding(.trailing, 5)
                     SearchView(didTapSearchBar: didTapSearchBar, didStartSearch: { searchText in
                         xMark = false
                         viewModel.searchProduct(searchText: searchText)
@@ -49,6 +51,11 @@ struct ProductHomeView: View {
                                     GeometryReader { g in
                                         VStack {
                                             ProductViewCell(model: result, isLoading: result.shimmer ?? false)
+                                                .onTapGesture {
+                                                    self.goBack.wrappedValue.dismiss()
+                                                    self.didGoToDetail?(result)
+                                                }
+                                                .disabled(result.shimmer ?? false)
                                         }
                                         .onAppear {
                                             self.time = Timer.publish(every: 0.1, on: .main, in: .tracking).autoconnect()
@@ -65,13 +72,15 @@ struct ProductHomeView: View {
                                     }
                                     .frame(height: 150)
                                 } else {
-                                    if viewModel.isLoading {
+                                    VStack {
                                         ProductViewCell(model: result, isLoading: viewModel.isLoading)
-                                    } else {
-                                        NavigationLink(destination: ProductDetailView(model: result)) {
-                                            ProductViewCell(model: result, isLoading: viewModel.isLoading)
-                                        }
+                                            .onTapGesture {
+                                                self.goBack.wrappedValue.dismiss()
+                                                self.didGoToDetail?(result)
+                                            }
+                                            .disabled(viewModel.isLoading)
                                     }
+                                    .frame(height: 150)
                                 }
                             }
                         }

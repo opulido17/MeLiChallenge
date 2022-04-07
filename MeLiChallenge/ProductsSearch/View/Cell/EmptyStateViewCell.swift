@@ -16,7 +16,7 @@ struct EmptyStateViewCell: View {
                     .frame(width: 90, height: 90)
                 Image(systemName: "magnifyingglass")
                     .font(.system(size: 40))
-                    .foregroundColor(.white)
+                    .foregroundColor(Color.white)
                     .padding()
             }
             .padding()
@@ -30,6 +30,9 @@ struct EmptyStateViewCell: View {
                 .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
                 .padding(.vertical, 5)
                 .multilineTextAlignment(.center)
+        }
+        .onAppear {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
     }
 }

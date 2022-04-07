@@ -13,7 +13,11 @@ final class NetworkingService: NetworkingServicesProtocol {
         let url: String = Constants.serv_url_base + Constants.serv_getCategory
         AF.request(url, method: .get).validate(statusCode: Constants.serviceStatusCodeOk).responseDecodable(of: [CategoryModel].self) { response in
             if let categoryModel = response.value {
-                completion(.success(categoryModel))
+                if categoryModel.isEmpty {
+                    completion(.failure("Empty List"))
+                } else {
+                    completion(.success(categoryModel))
+                }
             } else {
                 completion(.failure(response.error?.localizedDescription ?? "Error de servicio"))
             }
@@ -25,7 +29,11 @@ final class NetworkingService: NetworkingServicesProtocol {
         let urlReplace = url.replacingOccurrences(of: "{categoryId}", with: categoryId)
         AF.request(urlReplace, method: .get).validate(statusCode: Constants.serviceStatusCodeOk).responseDecodable(of: SearchResult.self) { response in
             if let result = response.value?.results {
-                completion(.success(result))
+                if result.isEmpty {
+                    completion(.failure("Empty List"))
+                } else {
+                    completion(.success(result))
+                }
             } else {
                 completion(.failure(response.error?.localizedDescription ?? "Error de servicios"))
             }
@@ -36,10 +44,10 @@ final class NetworkingService: NetworkingServicesProtocol {
         let url = Constants.serv_url_base + Constants.serv_getProductSearch
         let searchReplace = url.replacingOccurrences(of: "{search}", with: searchText)
         let limitReplace = searchReplace.replacingOccurrences(of: "{limit}", with: "\(limit)")
-        let urlRequest = limitReplace.replacingOccurrences(of: " ", with: "%20") // todo : - No deberia ser de esta forma -> Pendiente
+        let urlRequest = limitReplace.replacingOccurrences(of: " ", with: "%20")
         AF.request(urlRequest, method: .get).validate(statusCode: Constants.serviceStatusCodeOk).responseDecodable(of: SearchResult.self) { response in
             if let searchResult = response.value {
-                if searchResult.results?.isEmpty ?? false {
+                if searchResult.results?.isEmpty ?? true {
                     completion(.failure("Empty List"))
                 } else {
                     completion(.success(searchResult.results ?? [Results]()))
