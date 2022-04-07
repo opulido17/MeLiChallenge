@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Network
 
 struct ProductByCategoryView: View {
     
@@ -14,12 +15,14 @@ struct ProductByCategoryView: View {
     var categoryId: String
     var categoryName: String
     let colums: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
+    @State private var isPresented: Bool = false
     
     var body: some View {
         ScrollView {
+            Rectangle().foregroundColor(CustomColor.blueRegular).edgesIgnoringSafeArea(.top).frame(height: 0)
             LazyVGrid(columns: colums, spacing: 15) {
                 ForEach(self.viewModel.results, id: \.id) { result in
-                    NavigationLink(destination: ProductDetailView(goBack: _goToBack, model: result, viewModel: ProductDetailViewModel(itemId: result.id ?? "", sellerId: result.seller?.id ?? 0))) {
+                    NavigationLink(destination: ProductDetailView(model: result, viewModel: ProductDetailViewModel(itemId: result.id ?? "", sellerId: result.seller?.id ?? 0))) {
                         OtherProductsViewCell(model: result, isLoading: viewModel.isLoading, cellFrame: (width: cardWidth(), height: 270))
                     }
                     .disabled(viewModel.isLoading)
@@ -29,6 +32,21 @@ struct ProductByCategoryView: View {
             .padding(.bottom, 10)
             .navigationTitle(categoryName)
             .navigationBarTitleDisplayMode(.inline)
+        }
+        .navigationBarItems(trailing:
+            HStack {
+                Button {
+                    self.isPresented.toggle()
+                } label: {
+                    Image(systemName: "magnifyingglass.circle.fill")
+                        .background(CustomColor.lightYellow)
+                        .foregroundColor(CustomColor.lightWhite)
+                        .cornerRadius(10)
+                }
+            }
+        )
+        .popup(isPresented: $viewModel.shouldShowNetworkError) {
+            ErrorAlertView(isPresented: $viewModel.shouldShowNetworkError, text: Constants.messageNetworkError, image: nil, confirm: { viewModel.shouldShowNetworkError = false })
         }
         .onAppear {
             viewModel.getProductsByCategory(categoryId: categoryId)

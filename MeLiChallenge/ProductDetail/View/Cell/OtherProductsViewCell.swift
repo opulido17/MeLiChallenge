@@ -20,7 +20,8 @@ struct OtherProductsViewCell: View {
             VStack {
                 AnimatedImage(url: URL(string: self.model.thumbnail?.replaceHttpUrl() ?? Constants.defaultImage))
                     .resizable()
-                    .frame(maxWidth: .infinity, maxHeight: 150)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxHeight: 150)
                     .skeleton(with: isLoading, size: CGSize(width: 100, height: 100), transition: .slide)
             }
             .frame(maxWidth: .infinity, maxHeight: 150)

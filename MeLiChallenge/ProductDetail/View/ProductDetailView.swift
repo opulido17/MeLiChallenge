@@ -17,6 +17,7 @@ struct ProductDetailView: View {
     @State private var quantityModel: QuantityModel = QuantityModel()
     @State private var showBuyAlert: Bool = false
     @State private var showBuyAlertDone: Bool = false
+    @State private var isPresented: Bool = false
     
     var body: some View {
         ScrollView(.vertical) {
@@ -33,6 +34,8 @@ struct ProductDetailView: View {
                     VStack {
                         AnimatedImage(url: URL(string: self.model.thumbnail?.replaceHttpUrl() ?? Constants.defaultImage))
                             .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 300)
                     }
                     .frame(maxWidth: .infinity, minHeight: 300, maxHeight: 300)
                     Text("\(self.model.price)".toPriceNumber())
@@ -183,6 +186,18 @@ struct ProductDetailView: View {
                 }
             }
             .navigationTitle("Detalle")
+            .navigationBarItems(trailing:
+                HStack {
+                    Button {
+                        self.isPresented.toggle()
+                    } label: {
+                        Image(systemName: "magnifyingglass.circle.fill")
+                            .background(CustomColor.lightYellow)
+                            .foregroundColor(CustomColor.lightWhite)
+                            .cornerRadius(10)
+                    }
+                }
+            )
             .padding()
             .onAppear {
                 for i in 1...(model.availableQuantity ?? 0) {
@@ -217,9 +232,6 @@ struct ProductDetailView: View {
         }
         .popup(isPresented: self.$quantityModel.isPresend) {
             SelectQuantityView(quantityModel: self.$quantityModel)
-                .transition(.move(edge: .bottom))
-                .animation(.default)
-            //.animation(.interpolatingSpring(mass: 0.5, stiffness: 100, damping: 15, initialVelocity: 0))
         }
     }
 }

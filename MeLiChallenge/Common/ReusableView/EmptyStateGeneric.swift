@@ -15,7 +15,8 @@ struct EmptyStateGeneric: View {
         VStack {
             Image(Constants.imageErrorServiceGeneral)
                 .resizable()
-                .frame(width: 200, height: 200)
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 150, height: 150)
             Text("¡Ocurrió un error al cargar la información!")
                 .font(Font.custom(FontName.regular.rawValue, size: 25))
                 .foregroundColor(CustomColor.darkGray)

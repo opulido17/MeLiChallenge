@@ -44,6 +44,8 @@ struct SelectQuantityView: View {
             }
             .ignoresSafeArea()
         }
+//        .transition(.move(edge: .bottom))
+//        .animation(.default)
     }
 }
 

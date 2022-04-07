@@ -7,12 +7,14 @@
 
 import Foundation
 import Combine
+import Network
 
 class ProductByCategoryViewModel: ObservableObject {
     // MARK: - Properties class
     @Published var results: [Results] = [Results]()
     @Published var shouldShowFuntionalityError: Bool = false
     @Published var isLoading: Bool = true
+    @Published var shouldShowNetworkError: Bool = false
     
     private let networkingService: NetworkingServicesProtocol
     
@@ -23,6 +25,9 @@ class ProductByCategoryViewModel: ObservableObject {
     
     // MARK: - Functions
     func getProductsByCategory(categoryId: String) {
+        NetworkMonitor.shared.delegate = self
+        NetworkMonitor.shared.start()
+        guard NetworkMonitor.shared.isNetworkAvailable() else { return }
         getProductByCategoryForShimmer()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.networkingService.getProductsCategory(categoryId: categoryId) { [weak self] result in
@@ -41,6 +46,17 @@ class ProductByCategoryViewModel: ObservableObject {
         for item in 0...5 {
             let result = Results.getModelResultBasic("\(item)")
             self.results.append(result)
+        }
+    }
+}
+
+// MARK: - Extension NetworkMonitorDelegats
+extension ProductByCategoryViewModel: NetworkMonitorDelegate {
+    func networkMonitor(didChangeStatus status: NWPath.Status) {
+        if status != .satisfied {
+            shouldShowNetworkError = true
+        } else {
+            shouldShowNetworkError = false
         }
     }
 }

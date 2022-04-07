@@ -10,7 +10,6 @@ import SkeletonUI
 
 struct HomeView: View {
     
-    @Environment(\.presentationMode) var goBack
     @ObservedObject var viewModel = HomeViewModel()
     @State private var searchText = ""
     @State private var isActive: Bool = false
@@ -80,6 +79,7 @@ struct HomeView: View {
                 .edgesIgnoringSafeArea(.top)
             }
             .navigationBarHidden(true)
+            .navigationBarTitle("Categorias")
             .onAppear {
                 self.viewModel.getCategories()
             }

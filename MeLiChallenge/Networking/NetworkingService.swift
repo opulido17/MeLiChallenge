@@ -44,7 +44,7 @@ final class NetworkingService: NetworkingServicesProtocol {
         let url = Constants.serv_url_base + Constants.serv_getProductSearch
         let searchReplace = url.replacingOccurrences(of: "{search}", with: searchText)
         let limitReplace = searchReplace.replacingOccurrences(of: "{limit}", with: "\(limit)")
-        let urlRequest = limitReplace.replacingOccurrences(of: " ", with: "%20") // todo : - No deberia ser de esta forma -> Pendiente
+        let urlRequest = limitReplace.replacingOccurrences(of: " ", with: "%20")
         AF.request(urlRequest, method: .get).validate(statusCode: Constants.serviceStatusCodeOk).responseDecodable(of: SearchResult.self) { response in
             if let searchResult = response.value {
                 if searchResult.results?.isEmpty ?? true {
