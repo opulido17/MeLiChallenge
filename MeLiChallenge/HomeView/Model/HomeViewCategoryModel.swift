@@ -12,6 +12,6 @@ struct CategoryModel: Decodable {
     let name: String
     
     static func getModelCategoryBasic(id: String) -> CategoryModel {
-        return CategoryModel(id: id, name: id)
+        return CategoryModel(id: id, name: "")
     }
 }

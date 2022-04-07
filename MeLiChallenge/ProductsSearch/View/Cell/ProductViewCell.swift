@@ -65,7 +65,7 @@ struct ProductViewCell: View {
             }
         }
         .frame(maxHeight: 150)
-        .padding()
+        .padding([.leading, .top, .bottom])
     }
 }
 

@@ -12,17 +12,19 @@ struct ProductByCategoryView: View {
     
     @Environment(\.presentationMode) var goToBack
     @ObservedObject var viewModel = ProductByCategoryViewModel()
+    @State private var isPresentedSearchBar: Bool = false
+    @State private var isPresentedProductDetail: Bool = false
+    @State private var result: Results?
     var categoryId: String
     var categoryName: String
     let colums: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
-    @State private var isPresented: Bool = false
     
     var body: some View {
         ScrollView {
-            Rectangle().foregroundColor(CustomColor.blueRegular).edgesIgnoringSafeArea(.top).frame(height: 0)
+            NavigationLink(destination: ProductDetailView(viewModel: ProductDetailViewModel(itemId: result?.id ?? "", sellerId: result?.seller?.id ?? 0), model: result ?? Results.getModelResultBasic()), isActive: $isPresentedProductDetail) { EmptyView() }
             LazyVGrid(columns: colums, spacing: 15) {
                 ForEach(self.viewModel.results, id: \.id) { result in
-                    NavigationLink(destination: ProductDetailView(model: result, viewModel: ProductDetailViewModel(itemId: result.id ?? "", sellerId: result.seller?.id ?? 0))) {
+                    NavigationLink(destination: ProductDetailView(viewModel: ProductDetailViewModel(itemId: result.id ?? "", sellerId: result.seller?.id ?? 0), model: result)) {
                         OtherProductsViewCell(model: result, isLoading: viewModel.isLoading, cellFrame: (width: cardWidth(), height: 270))
                     }
                     .disabled(viewModel.isLoading)
@@ -36,25 +38,35 @@ struct ProductByCategoryView: View {
         .navigationBarItems(trailing:
             HStack {
                 Button {
-                    self.isPresented.toggle()
+                    self.isPresentedSearchBar.toggle()
                 } label: {
-                    Image(systemName: "magnifyingglass.circle.fill")
-                        .background(CustomColor.lightYellow)
-                        .foregroundColor(CustomColor.lightWhite)
-                        .cornerRadius(10)
+                    Image(systemName: "magnifyingglass")
+                        .resizable()
+                        .font(Font.system(size: 17))
+                        .foregroundColor(CustomColor.lightYellow)
                 }
             }
         )
-        .popup(isPresented: $viewModel.shouldShowNetworkError) {
-            ErrorAlertView(isPresented: $viewModel.shouldShowNetworkError, text: Constants.messageNetworkError, image: nil, confirm: { viewModel.shouldShowNetworkError = false })
-        }
         .onAppear {
             viewModel.getProductsByCategory(categoryId: categoryId)
+        }
+        .popup(isPresented: $viewModel.shouldShowNetworkError) {
+            ErrorAlertView(isPresented: $viewModel.shouldShowNetworkError, text: Constants.messageNetworkError, image: nil, confirm: { viewModel.shouldShowNetworkError = false })
         }
         .popup(isPresented: $viewModel.shouldShowFuntionalityError) {
             ErrorAlertView(isPresented: $viewModel.shouldShowFuntionalityError, text: Constants.messageErrorGeneric, image: Image(Constants.imageErrorServiceGeneral), confirm: {
                 viewModel.shouldShowFuntionalityError = false
                 goToBack.wrappedValue.dismiss()
+            })
+        }
+        .fullScreenCover(isPresented: $isPresentedSearchBar) {
+            isPresentedProductDetail = false
+        } content: {
+            ProductHomeView(didGoToDetail: { result in
+                self.result = result
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.isPresentedProductDetail = true
+                }
             })
         }
     }

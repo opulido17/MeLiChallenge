@@ -12,16 +12,19 @@ import SkeletonUI
 struct ProductDetailView: View {
     
     @Environment(\.presentationMode) var goBack
-    var model: Results
     @ObservedObject var viewModel = ProductDetailViewModel(itemId: "", sellerId: 0)
     @State private var quantityModel: QuantityModel = QuantityModel()
     @State private var showBuyAlert: Bool = false
     @State private var showBuyAlertDone: Bool = false
-    @State private var isPresented: Bool = false
+    @State private var isPresentedSearchBar: Bool = false
+    @State private var isPresentedProductDetail: Bool = false
+    @State private var result: Results?
+    var model: Results
     
     var body: some View {
         ScrollView(.vertical) {
             VStack(alignment: .leading) {
+                NavigationLink(destination: ProductDetailView(viewModel: ProductDetailViewModel(itemId: result?.id ?? "", sellerId: result?.seller?.id ?? 0), model: result ?? Results.getModelResultBasic()), isActive: $isPresentedProductDetail) { EmptyView() }
                 Group {
                     let parameter = self.model.soldQuantity ?? 0
                     let soldQuantity = parameter > 0 ? "| \(parameter) vendidos" : ""
@@ -55,16 +58,17 @@ struct ProductDetailView: View {
                     HStack {
                         Image(systemName: "cart")
                             .font(.system(size: 20))
+                            .skeleton(with: viewModel.isLoadingSeller, transition: .slide)
                         VStack(alignment: .leading) {
                             Text(self.viewModel.sellerModel?.seller?.nickname ?? "NA")
                                 .font(Font.custom(FontName.regular.rawValue, size: 14))
                             Text("\(self.viewModel.sellerModel?.seller?.sellerReputation?.metrics?.sales.completed ?? 0) Ventas")
                                 .font(.custom(FontName.regular.rawValue, size: 14))
                         }
+                        .skeleton(with: viewModel.isLoadingSeller, transition: .slide)
                     }
                     .padding(.top, 1)
                     .accessibility(hidden: viewModel.shouldShowSellerFuntionalityError)
-                    .skeleton(with: viewModel.isLoadingSeller, size: CGSize(width: 150, height: 35), transition: .slide)
                 }
                 // MARK: - QuantityButton
                 Group {
@@ -164,15 +168,18 @@ struct ProductDetailView: View {
                         .skeleton(with: viewModel.isLoadingDescription, transition: .slide)
                 }
                 .accessibility(hidden: viewModel.shouldShowDescriptionFuntionalityError)
+            }
+            .padding([.leading, .top, .trailing])
+            VStack {
                 Group {
                     VStack(alignment: .leading) {
                         Text("Otros productos")
-                            .font(Font.custom(FontName.bold.rawValue, size: 16))
-                            .padding(.top)
+                            .font(Font.custom(FontName.bold.rawValue, size: 20))
+                            .padding([.top, .leading])
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
                                 ForEach(self.viewModel.sellerModel?.results ?? [Results](), id: \.id) { product in
-                                    NavigationLink(destination: ProductDetailView(model: product, viewModel: ProductDetailViewModel(itemId: product.id ?? "", sellerId: product.seller?.id ?? 0))) {
+                                    NavigationLink(destination: ProductDetailView(viewModel: ProductDetailViewModel(itemId: product.id ?? "", sellerId: product.seller?.id ?? 0), model: product)) {
                                         OtherProductsViewCell(model: product, isLoading: viewModel.isLoadingSeller)
                                             .padding(.horizontal, 5)
                                             .padding(.vertical, 7)
@@ -180,26 +187,28 @@ struct ProductDetailView: View {
                                     .disabled(viewModel.isLoadingSeller)
                                 }
                             }
+                            .padding([.horizontal, .bottom], 10)
                         }
                     }
                     .accessibility(hidden: viewModel.shouldShowSellerFuntionalityError)
                 }
             }
-            .navigationTitle("Detalle")
-            .navigationBarItems(trailing:
-                HStack {
-                    Button {
-                        self.isPresented.toggle()
-                    } label: {
-                        Image(systemName: "magnifyingglass.circle.fill")
-                            .background(CustomColor.lightYellow)
-                            .foregroundColor(CustomColor.lightWhite)
-                            .cornerRadius(10)
-                    }
+        }
+        .navigationTitle("Detalle")
+        .navigationBarItems(trailing:
+            HStack {
+                Button {
+                    self.isPresentedSearchBar.toggle()
+                } label: {
+                    Image(systemName: "magnifyingglass")
+                        .resizable()
+                        .font(Font.system(size: 17))
+                        .foregroundColor(CustomColor.lightYellow)
                 }
-            )
-            .padding()
-            .onAppear {
+            }
+        )
+        .onAppear {
+            if (model.availableQuantity ?? 0) >= 1 {
                 for i in 1...(model.availableQuantity ?? 0) {
                     quantityModel.quantityArray.append(i)
                 }
@@ -232,6 +241,16 @@ struct ProductDetailView: View {
         }
         .popup(isPresented: self.$quantityModel.isPresend) {
             SelectQuantityView(quantityModel: self.$quantityModel)
+        }
+        .fullScreenCover(isPresented: $isPresentedSearchBar) {
+            isPresentedProductDetail = false
+        } content: {
+            ProductHomeView(didGoToDetail: { result in
+                self.result = result
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.isPresentedProductDetail = true
+                }
+            })
         }
     }
 }

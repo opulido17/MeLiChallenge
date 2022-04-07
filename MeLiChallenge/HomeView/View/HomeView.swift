@@ -12,24 +12,25 @@ struct HomeView: View {
     
     @ObservedObject var viewModel = HomeViewModel()
     @State private var searchText = ""
-    @State private var isActive: Bool = false
+    @State private var isPresentedSearchBar: Bool = false
+    @State private var isPresentedProductDetail: Bool = false
+    @State private var result: Results?
     var didTapSearchBar: (() -> Void)?
     var didStartSearch: ((String) -> Void)?
     
     var body: some View {
         NavigationView {
             VStack {
+                NavigationLink(destination: ProductDetailView(viewModel: ProductDetailViewModel(itemId: result?.id ?? "", sellerId: result?.seller?.id ?? 0), model: result ?? Results.getModelResultBasic()), isActive: $isPresentedProductDetail) { EmptyView() }
                 VStack(spacing: 0) {
                     ZStack {
                         SearchView(didTapSearchBar: didTapSearchBar, didStartSearch: didStartSearch, text: self.$searchText, preventStartEditing: true)
-                        NavigationLink(destination: ProductHomeView(), isActive: $isActive) {
-                            Button {
-                                isActive.toggle()
-                            } label: {
-                                Text("")
-                                    .frame(maxWidth: .infinity)
-                                    .padding([.top, .leading, .trailing])
-                            }
+                        Button {
+                            isPresentedSearchBar.toggle()
+                        } label: {
+                            Text("")
+                                .frame(maxWidth: .infinity)
+                                .padding([.top, .leading, .trailing])
                         }
                         Spacer(minLength: 0)
                     }
@@ -85,6 +86,16 @@ struct HomeView: View {
             }
             .popup(isPresented: $viewModel.shouldShowNetworkError) {
                 ErrorAlertView(isPresented: $viewModel.shouldShowNetworkError, text: Constants.messageNetworkError, image: nil, confirm: { viewModel.shouldShowNetworkError = false })
+            }
+            .fullScreenCover(isPresented: $isPresentedSearchBar) {
+                isPresentedProductDetail = false
+            } content: {
+                ProductHomeView(didGoToDetail: { result in
+                    self.result = result
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        self.isPresentedProductDetail = true
+                    }
+                })
             }
         }
     }
